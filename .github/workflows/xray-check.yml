@@ -27,7 +27,7 @@ jobs:
           if ! pgrep -x "xray" > /dev/null
           then
               echo "xray is not running, restarting..."
-              /home/okfine1/xray/run.sh
+              ./home/okfine1/xray/run.sh
           else
               echo "xray is running."
           fi
