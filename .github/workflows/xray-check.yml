@@ -1,0 +1,34 @@
+name: Check xray Service
+
+on:
+  schedule:
+    # 每5分钟运行一次
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  # 允许手动触发工作流
+
+jobs:
+  check_xray:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
+
+      - name: Run xray check script
+        env:
+          SERVER_B: ${{ secrets.SERVER_B }}
+          USER: ${{ secrets.SSH_USER }}
+          PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -T $USER@$SERVER_B << EOF
+          if ! pgrep -x "xray" > /dev/null
+          then
+              echo "xray is not running, restarting..."
+              /usr/run.sh
+          else
+              echo "xray is running."
+          fi
+          EOF
