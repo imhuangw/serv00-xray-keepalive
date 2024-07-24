@@ -26,6 +26,18 @@ jobs:
           sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -T $USER@$SERVER_B << EOF
           if ! pgrep -x "xray" > /dev/null
           then
+              CADDY_PID=\$(pgrep -x "caddy")
+              
+              if [ -n "\$CADDY_PID" ]; then
+                  echo "Stopping caddy with PID \$CADDY_PID..."
+                  kill -9 \$CADDY_PID
+              else
+                  echo "caddy is not running."
+              fi
+
+              echo "Removing Xray-* files from /home/okfine1/xray/socket..."
+              rm -f /home/okfine1/xray/socket/Xray-*
+              
               echo "xray is not running, restarting..."
               cd /home/okfine1/xray
               ./run.sh
