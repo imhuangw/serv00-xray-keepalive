@@ -3,7 +3,7 @@ name: Check xray Service
 on:
   schedule:
     # 每5分钟运行一次
-    - cron: '*/5 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:  # 允许手动触发工作流
 
 jobs:
