@@ -41,6 +41,8 @@ jobs:
               echo "xray is not running, restarting..."
               cd /home/okfine1/xray
               ./run.sh
+              cd /home/okfine1/caddy262
+              ./run.sh
           else
               echo "xray is running."
           fi
